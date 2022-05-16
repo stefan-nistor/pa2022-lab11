@@ -9,6 +9,10 @@ import ro.info.uaic.ro.pa2022lab11.exceptions.UserException;
 import ro.info.uaic.ro.pa2022lab11.exceptions.UserNotFoundException;
 import ro.info.uaic.ro.pa2022lab11.repos.UserRepo;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -21,7 +25,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO saveUser(UserDTO user) {
         var userFromDb = userRepo.findByUsername(user.getUsername());
-        if(userFromDb.isPresent())
+        if (userFromDb.isPresent())
             throw new UserException("Username Already taken");
         userRepo.save(mapper.map(user, UserEntity.class));
         return user;
@@ -30,8 +34,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO findById(Long id) {
         var userFromDb = userRepo.findById(id);
-        if(userFromDb.isEmpty())
+        if (userFromDb.isEmpty())
             throw new UserNotFoundException("No such id");
         return mapper.map(userFromDb.get(), UserDTO.class);
+    }
+
+    @Override
+    public List<UserDTO> findAll() {
+        var userList = userRepo.findAll();
+        List<UserDTO> resultList = new ArrayList<>();
+        resultList = userList.stream()
+                .map(entity -> mapper.map(entity, UserDTO.class))
+                .collect(Collectors.toList());
+        return resultList;
     }
 }

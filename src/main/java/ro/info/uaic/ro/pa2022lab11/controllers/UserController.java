@@ -25,4 +25,9 @@ public class UserController {
         return ResponseEntity.ok(userService.findById(id));
     }
 
+    @GetMapping
+    ResponseEntity<?> findAll() {
+        return ResponseEntity.ok(userService.findAll());
+    }
+
 }
