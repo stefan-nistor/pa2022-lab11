@@ -42,10 +42,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDTO> findAll() {
         var userList = userRepo.findAll();
-        List<UserDTO> resultList = new ArrayList<>();
-        resultList = userList.stream()
+        return userList.stream()
                 .map(entity -> mapper.map(entity, UserDTO.class))
                 .collect(Collectors.toList());
-        return resultList;
+    }
+
+    @Override
+    public void deleteUserById(Long id) {
+        var user = userRepo.findById(id);
+        if(user.isEmpty())
+            throw new UserNotFoundException("No such id");
+        userRepo.delete(user.get());
     }
 }

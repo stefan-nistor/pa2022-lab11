@@ -21,13 +21,19 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<?> findUserById(@PathVariable Long id){
+    ResponseEntity<?> findUserById(@PathVariable Long id) {
         return ResponseEntity.ok(userService.findById(id));
     }
 
     @GetMapping
     ResponseEntity<?> findAll() {
         return ResponseEntity.ok(userService.findAll());
+    }
+
+    @DeleteMapping("/{id}")
+    ResponseEntity<?> deleteById(@PathVariable Long id) {
+        userService.deleteUserById(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

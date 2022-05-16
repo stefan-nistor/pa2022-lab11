@@ -8,4 +8,5 @@ public interface UserService {
     UserDTO saveUser(UserDTO user);
     UserDTO findById(Long id);
     List<UserDTO> findAll();
+    void deleteUserById(Long id);
 }
